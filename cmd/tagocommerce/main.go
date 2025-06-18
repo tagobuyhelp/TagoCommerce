@@ -7,9 +7,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 
-	"github.com/tagobuyhelp/TagoCommerce/internal/config"
-    "github.com/tagobuyhelp/TagoCommerce/internal/database"
-    "github.com/tagobuyhelp/TagoCommerce/internal/routes"
+	"TagoCommerce/internal/config"
+    "TagoCommerce/internal/database"
+    "TagoCommerce/internal/routes"
+
 )
 
 func main() {

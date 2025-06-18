@@ -1,31 +1,42 @@
 package database
 
 import (
-	"context"
-	"fmt"
-	"log"
-	"time"
+    "context"
+    "log"
+    "time"
 
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-	"tagocommerce/internal/config"
+    "go.mongodb.org/mongo-driver/mongo"
+    "go.mongodb.org/mongo-driver/mongo/options"
+    
+    "TagoCommerce/internal/config"
 )
 
-var DB *mongo.Client
+var Client *mongo.Client
+var Database *mongo.Database
 
+// ConnectDB establishes a connection to the MongoDB database
 func ConnectDB() {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
+    ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+    defer cancel()
 
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI(config.MongoURI))
-	if err != nil {
-		log.Fatal("MongoDB Connection Error:", err)
-	}
+    clientOptions := options.Client().ApplyURI(config.AppConfig.MongoURI)
+    client, err := mongo.Connect(ctx, clientOptions)
+    if err != nil {
+        log.Fatal("Failed to connect to MongoDB:", err)
+    }
 
-	if err := client.Ping(ctx, nil); err != nil {
-		log.Fatal("MongoDB Ping Error:", err)
-	}
+    // Check the connection
+    err = client.Ping(ctx, nil)
+    if err != nil {
+        log.Fatal("Failed to ping MongoDB:", err)
+    }
 
-	DB = client
-	fmt.Println("✅ MongoDB connected")
+    log.Println("Connected to MongoDB!")
+    Client = client
+    Database = client.Database("tagocommerce")
+}
+
+// GetCollection returns a handle to the specified collection
+func GetCollection(collectionName string) *mongo.Collection {
+    return Database.Collection(collectionName)
 }

@@ -1,4 +1,4 @@
-module github.com/tagobuyhelp/TagoCommerce
+module TagoCommerce
 
 go 1.23.0
 
