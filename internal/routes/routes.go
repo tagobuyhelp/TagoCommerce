@@ -6,6 +6,14 @@ import (
 
 // SetupRoutes configures all the routes for the application
 func SetupRoutes(r *gin.Engine) {
+    // Root route
+    r.GET("/", func(c *gin.Context) {
+        c.JSON(200, gin.H{
+            "message": "Welcome to TagoCommerce API",
+            "version": "1.0.0",
+        })
+    })
+
     // API group
     api := r.Group("/api")
     
